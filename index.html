@@ -3,25 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR 코드 생성기</title>
+    <title> 아몬드영 QR 코드 생성기</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #qrcode img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            input, button {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>QR 코드 생성기</h1>
-    <input type="text" id="qrText" placeholder="QR 코드에 넣을 텍스트를 입력하세요">
-    <button onclick="generateQRCode()">QR 코드 생성</button>
-    <div id="qrcode"></div>
+
+    <div class="container">
+        <h1>QR 코드 생성기</h1>
+        <input type="text" id="qrText" placeholder="QR 코드에 넣을 텍스트를 입력하세요">
+        <button onclick="generateQRCode()">QR 코드 생성</button>
+        <div id="qrcode"></div>
+    </div>
 
     <script>
         function generateQRCode() {
             const qrText = document.getElementById('qrText').value;
             const qrDiv = document.getElementById('qrcode');
             qrDiv.innerHTML = '';
+            if (qrText.trim() === '') {
+                alert('QR 코드에 넣을 텍스트를 입력하세요');
+                return;
+            }
             const qr = qrcode(0, 'L');
             qr.addData(qrText);
             qr.make();
             qrDiv.innerHTML = qr.createImgTag();
         }
     </script>
+
 </body>
 </html>
