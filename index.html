@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> 아몬드영 QR 코드 생성기</title>
+    <title>QR 코드 생성기</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
     <style>
         body {
@@ -74,6 +74,12 @@
                 font-size: 14px;
             }
         }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -83,6 +89,7 @@
         <input type="text" id="qrText" placeholder="QR 코드에 넣을 텍스트를 입력하세요">
         <button onclick="generateQRCode()">QR 코드 생성</button>
         <div id="qrcode"></div>
+        <div class="footer">이 서비스는 아몬드영에서 미용사들을 위해 무료로 서비스합니다.</div>
     </div>
 
     <script>
