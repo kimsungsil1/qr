@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR 코드 생성기</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+</head>
+<body>
+    <h1>QR 코드 생성기</h1>
+    <input type="text" id="qrText" placeholder="QR 코드에 넣을 텍스트를 입력하세요">
+    <button onclick="generateQRCode()">QR 코드 생성</button>
+    <div id="qrcode"></div>
+
+    <script>
+        function generateQRCode() {
+            const qrText = document.getElementById('qrText').value;
+            const qrDiv = document.getElementById('qrcode');
+            qrDiv.innerHTML = '';
+            const qr = qrcode(0, 'L');
+            qr.addData(qrText);
+            qr.make();
+            qrDiv.innerHTML = qr.createImgTag();
+        }
+    </script>
+</body>
+</html>
