@@ -15,6 +15,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
 
         .container {
@@ -26,6 +27,7 @@
             max-width: 400px;
             width: 100%;
             box-sizing: border-box;
+            margin-bottom: 20px;
         }
 
         h1 {
@@ -35,6 +37,15 @@
         }
 
         input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        select {
             width: 100%;
             padding: 10px;
             font-size: 16px;
@@ -65,20 +76,32 @@
             margin-top: 20px;
         }
 
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 20px;
-            }
-
-            input, button {
-                font-size: 14px;
-            }
-        }
-
         .footer {
             margin-top: 20px;
             font-size: 14px;
             color: #555;
+        }
+
+        .history {
+            max-width: 400px;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .history ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .history li {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #333;
         }
     </style>
 </head>
@@ -87,24 +110,78 @@
     <div class="container">
         <h1>QR 코드 생성기</h1>
         <input type="text" id="qrText" placeholder="QR 코드에 넣을 텍스트를 입력하세요">
+        <select id="qrColor">
+            <option value="#000000">검정색</option>
+            <option value="#eab778">주황색</option>
+            <option value="#4CAF50">녹색</option>
+            <option value="#0000FF">파란색</option>
+        </select>
         <button onclick="generateQRCode()">QR 코드 생성</button>
         <div id="qrcode"></div>
-        <div class="footer">아몬드영에서 미용사들을 위해 무료로 서비스합니다.</div>
+        <button id="downloadBtn" style="display:none; margin-top: 10px;" onclick="downloadQRCode()">QR 코드 다운로드</button>
+        <div class="footer">이 서비스는 아몬드영에서 미용사들을 위해 무료로 서비스합니다.</div>
+    </div>
+
+    <div class="history">
+        <h2>생성 이력</h2>
+        <ul id="historyList"></ul>
     </div>
 
     <script>
         function generateQRCode() {
             const qrText = document.getElementById('qrText').value;
+            const qrColor = document.getElementById('qrColor').value;
             const qrDiv = document.getElementById('qrcode');
+            const downloadBtn = document.getElementById('downloadBtn');
             qrDiv.innerHTML = '';
+            downloadBtn.style.display = 'none';
+
             if (qrText.trim() === '') {
                 alert('QR 코드에 넣을 텍스트를 입력하세요');
                 return;
             }
+
             const qr = qrcode(0, 'L');
             qr.addData(qrText);
             qr.make();
-            qrDiv.innerHTML = qr.createImgTag();
+            const qrImgTag = qr.createImgTag(6);
+            qrDiv.innerHTML = qrImgTag;
+
+            // 색상 변경
+            const qrImg = qrDiv.querySelector('img');
+            qrImg.style.filter = `invert(1) sepia(1) saturate(5) hue-rotate(${getHueRotation(qrColor)}deg)`;
+
+            // 다운로드 버튼 표시
+            downloadBtn.style.display = 'block';
+
+            // 생성 이력 추가
+            addToHistory(qrText);
+        }
+
+        function getHueRotation(color) {
+            switch (color) {
+                case '#eab778': return 30;
+                case '#4CAF50': return 90;
+                case '#0000FF': return 240;
+                default: return 0;
+            }
+        }
+
+        function downloadQRCode() {
+            const qrImg = document.querySelector('#qrcode img');
+            if (!qrImg) return;
+
+            const link = document.createElement('a');
+            link.href = qrImg.src;
+            link.download = 'qrcode.png';
+            link.click();
+        }
+
+        function addToHistory(text) {
+            const historyList = document.getElementById('historyList');
+            const listItem = document.createElement('li');
+            listItem.textContent = text;
+            historyList.appendChild(listItem);
         }
     </script>
 
